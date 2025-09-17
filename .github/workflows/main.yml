@@ -25,3 +25,24 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest
 
+          name: Test DockerHub Login
+
+on:
+  workflow_dispatch:   # Run manually from GitHub Actions tab
+
+jobs:
+  dockerhub-login-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Test pull busybox
+        run: docker pull busybox
+
