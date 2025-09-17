@@ -1,14 +1,14 @@
-name: Docker Build and Push
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:   # allows manual trigger
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,12 +25,6 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest
 
-          name: Test DockerHub Login
-
-on:
-  workflow_dispatch:   # Run manually from GitHub Actions tab
-
-jobs:
   dockerhub-login-test:
     runs-on: ubuntu-latest
     steps:
