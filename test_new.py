@@ -1,3 +1,4 @@
+
 import pytest
 from app import app
 
@@ -13,3 +14,9 @@ def test_app_is_working(client):
     response = client.get('/')
     assert response.status_code == 200
     assert b"Hello World!" in response.data
+
+
+def test_not_found(client):
+    response = client.get('/random')
+    assert response.status_code == 404
+
